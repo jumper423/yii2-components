@@ -125,10 +125,10 @@ class File
 	{
 		switch ($this->error) {
 			case 0 :
-				return 'Неккоректное имя модели';
+				return 'Некорректное имя модели';
 				break;
 			case 1 :
-				return 'Неккоректное имя поля';
+				return 'Некорректное имя поля';
 				break;
 			case 2 :
 				return 'Неправильный формат файла';
@@ -178,7 +178,7 @@ class File
 	}
 
 	/**
-	 * получение типов
+	 * получение Mime-типов
 	 * @return array
 	 */
 	public function getTypes()
