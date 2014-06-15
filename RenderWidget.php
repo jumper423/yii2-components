@@ -9,8 +9,7 @@
 /**
  * Отображение произвольного списка данных
  *
- * Пример:
- *
+ * Пример1:
  * RenderWidget::widget([
  *     'list' => $list,
  *     'fields' => [
@@ -18,6 +17,17 @@
  *        'name'
  *     ],
  *     'template' => '<li><h2>{id}</h2><p>{name}</p></li>'
+ * ]);
+ *
+ * Пример2 (вложенные имена):
+ * RenderWidget::widget([
+ *     'list' => $list,
+ *     'fields' => [
+ *         'id',
+ *         'category.name.title',
+ *         'name'
+ *     ],
+ *     'template' => '<li><h2>#{id}</h2><p>{category.name.title}</p><p>{name}</p></li>'
  * ]);
  *
  * Class RenderWidget
@@ -100,7 +110,16 @@ class RenderWidget
 	{
 		$arr = [];
 		for ($i = 0; $i < count(self::$fields); $i++) {
-			$arr['{' . self::$fields[$i] . '}'] = $item[self::$fields[$i]];
+			$names = explode('.', self::$fields[$i]);
+			if (count($names) > 1) {
+				$t = $item;
+				foreach ($names as $name) {
+					$t = $t[$name];
+				}
+				$arr['{' . self::$fields[$i] . '}'] = $t;
+			} else {
+				$arr['{' . self::$fields[$i] . '}'] = $item[self::$fields[$i]];
+			}
 		}
 		return strtr(self::$template, $arr);
 	}
